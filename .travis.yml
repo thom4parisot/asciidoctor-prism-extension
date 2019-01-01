@@ -2,7 +2,7 @@ language: node_js
 node_js: node
 
 deploy:
-  - provider: npm
+- provider: npm
   on:
     tags: true
   email: "hi@oncletom.io"
