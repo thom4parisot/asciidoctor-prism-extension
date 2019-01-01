@@ -1,6 +1,6 @@
 {
   "name": "asciidoctor-prism-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Highlight Asciidoc code listings with Prism.js, server side, with no front-end dependencies.",
   "main": "index.js",
   "scripts": {
