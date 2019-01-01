@@ -63,8 +63,8 @@ module.exports = function prismExtension () {
     });
   });
 
-  this.postprocessor(function(){
-    this.process((doc, docHtml) => {
+  this.docinfoProcessor(function(){
+    this.process((doc) => {
       if (doc.backend !== 'html5') {
         return '';
       }
@@ -79,12 +79,7 @@ module.exports = function prismExtension () {
       const theme_location = join(prism_folder, 'themes', theme);
       const output = readFileSync(theme_location);
 
-      docHtml = docHtml.replace(
-        '</head>',
-        `<style type="text/css" class="prism-theme">${output}</style>\n</head>`
-      );
-
-      return docHtml;
+      return `<style type="text/css" class="prism-theme">${output}</style>`;
     });
   });
 };

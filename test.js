@@ -22,7 +22,6 @@ script: npm test
 `;
 
 const backend = 'html5';
-const doctype = 'article';
 var attributes = [
   'prism-languages=yaml',
   'prism-theme=prism.css',
@@ -33,7 +32,8 @@ assert.throws(() => asciidoctor.convert(doc, {backend}), TypeError);
 assert.throws(() => asciidoctor.convert(doc, {backend}), /(loaded: bash)/);
 
 // Loaded language makes the conversion
-var output = asciidoctor.convert(doc, {backend, attributes, doctype});
+var options = {attributes, backend, safe: 'server'};
+var output = asciidoctor.convert(doc, options);
 debug(output);
 
 assert.ok(output.match('<div class="listingblock prismjs highlight-prismjs">'));
@@ -41,7 +41,8 @@ assert.ok(output.match('<span class="token key atrule">'));
 assert.ok(!output.match('<style type="text/css" class="prism-theme">'));
 
 // Fully fledged document
-var output = asciidoctor.convert(doc, {backend, attributes, header_footer: true, doctype});
+var options = {attributes, backend, header_footer: true, safe: 'server'};
+var output = asciidoctor.convert(doc, options);
 debug(output);
 
 assert.ok(output.match('<style type="text/css" class="prism-theme">'));
@@ -51,6 +52,7 @@ var attributes = [
   'prism-languages=yaml',
   'prism-theme!',
 ];
-var output = asciidoctor.convert(doc, {backend, attributes, header_footer: true, doctype});
+var options = {attributes, backend, header_footer: true, safe: 'server'};
+var output = asciidoctor.convert(doc, options);
 
 assert.ok(!output.match('<style type="text/css" class="prism-theme">'));
