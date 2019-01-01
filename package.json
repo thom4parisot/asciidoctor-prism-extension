@@ -1,0 +1,39 @@
+{
+  "name": "asciidoctor-prism-extension",
+  "version": "1.0.0",
+  "description": "Highlight Asciidoc code listings with Prism.js, server side, with no front-end dependencies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oncletom/asciidoctor-prism-extension.git"
+  },
+  "engines": {
+    "node": ">=10.x.x"
+  },
+  "keywords": [
+    "asciidoctor.js",
+    "asciidoc",
+    "syntax highlighting",
+    "asciidoc",
+    "extension",
+    "prism",
+    "highlight",
+    "server side",
+    "plugin"
+  ],
+  "author": "Thomas Parisot (https://oncletom.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oncletom/asciidoctor-prism-extension/issues"
+  },
+  "homepage": "https://github.com/oncletom/asciidoctor-prism-extension#readme",
+  "dependencies": {
+    "prismjs": "^1.15.0"
+  },
+  "devDependencies": {
+    "asciidoctor.js": "^1.5.9"
+  }
+}
