@@ -1,11 +1,11 @@
 'use strict';
 
-const asciidoctor = require('asciidoctor.js')();
+const asciidoctor = require('@asciidoctor/core')();
 const prismExtension = require('./index.js');
 const assert = require('assert').strict;
 const debug = require('util').debuglog('asciidoctor:prism-extension');
 
-asciidoctor.Extensions.register(prismExtension);
+asciidoctor.SyntaxHighlighter.register('prism', prismExtension);
 
 const doc = `= Document
 :source-highlighter: prism
