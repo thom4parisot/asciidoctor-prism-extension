@@ -69,7 +69,7 @@ module.exports = {
     return true;
   },
 
-  hasDocInfo() {
+  hasDocinfo() {
     return true;
   },
 
