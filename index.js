@@ -36,50 +36,58 @@ const unescape = html => {
     .replace(/&gt;/gi, '>');
 };
 
-module.exports = function prismExtension () {
-  this.treeProcessor(function(){
-    this.process(doc => {
-      if (doc.backend !== 'html5') {
-        return doc;
-      }
+module.exports = {
+  initialize (name, backend = 'html5') {
+    const languages = DEFAULT_LANGUAGES.split(',') /*getDocumentLanguages(doc) */;
 
-      const languages = getDocumentLanguages(doc);
-      loadLanguages(languages);
+    loadLanguages(languages);
+    this.backend = backend;
+    this.theme = true;
+    this.super();
+  },
 
-      doc.findBy({ context: 'listing' }, hasLanguage).forEach(block => {
-        const lang = block.getAttribute('language');
+  format (node, language) {
+    node.removeSubstitution('specialcharacters');
+    node.removeSubstitution('specialchars');
 
-        if (Prism.languages[lang] === undefined) {
-          throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).`);
-        }
+    const lang = node.getAttribute('language');
 
-        const output = Prism.highlight(unescape(block.getContent()), Prism.languages[lang]);
-        block.lines = output.replace(/____(\d+)____/gi, '<b class="conum">($1)</b>').split('\n');
-        block.removeSubstitution('specialcharacters');
-        block.removeSubstitution('specialchars');
-        block.addRole('prismjs');
-        block.addRole('highlight-prismjs');
-      });
-    });
-  });
+    // if (Prism.languages[lang] === undefined) {
+    //   throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).`);
+    // }
 
-  this.docinfoProcessor(function(){
-    this.process((doc) => {
-      if (doc.backend !== 'html5') {
-        return '';
-      }
+    const output = Prism.highlight(
+      node.getContent(),
+      Prism.languages['javascript']
+    ).replace(/____(\d+)____/gi, '<b class="conum">($1)</b>');
 
-      const theme = doc.getAttribute('prism-theme') || DEFAULT_THEME;
 
-      if (!doc.hasAttribute('prism-theme') || !theme) {
-        return '';
-      }
+    return `<pre class="prismjs highlight-prismjs"><code>${output}</code></pre>`;
+  },
 
-      const prism_folder = dirname(require.resolve('prismjs'));
-      const theme_location = join(prism_folder, 'themes', theme);
-      const output = readFileSync(theme_location);
+  handlesHighlighting () {
+    return true;
+  },
 
-      return `<style type="text/css" class="prism-theme">${output}</style>`;
-    });
-  });
-};
+  hasDocInfo() {
+    return true;
+  },
+
+  docinfo () {
+    if (this.backend !== 'html5') {
+      return '';
+    }
+
+    const theme = this.theme || DEFAULT_THEME;
+
+    if (!this.theme || !theme) {
+      return '';
+    }
+
+    const prism_folder = dirname(require.resolve('prismjs'));
+    const theme_location = join(prism_folder, 'themes', theme);
+    const output = readFileSync(theme_location);
+
+    return `<style type="text/css" class="prism-theme">${output}</style>`;
+  }
+}

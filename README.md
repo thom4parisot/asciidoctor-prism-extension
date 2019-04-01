@@ -9,7 +9,7 @@ This module is intended to be used with [Asciidoctor.js][], and Node.js (v10+). 
 # Install
 
 ```bash
-$ npm i asciidoctor.js asciidoctor-prism-extension
+$ npm install @asciidoctor/core asciidoctor-prism-extension
 ```
 
 # Configure
@@ -17,10 +17,10 @@ $ npm i asciidoctor.js asciidoctor-prism-extension
 ## Register the extension
 
 ```js
-const asciidoctor = require('asciidoctor.js')();
+const asciidoctor = require('@asciidoctor/core')();
 const prismExtension = require('asciidoctor-prism-extension');
 
-asciidoctor.Extensions.register(prismExtension);
+asciidoctor.SyntaxHighlighter.register('prism', prismExtension);
 ```
 
 ## Change the rendering

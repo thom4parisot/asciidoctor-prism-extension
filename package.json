@@ -11,7 +11,7 @@
     "url": "git+https://github.com/oncletom/asciidoctor-prism-extension.git"
   },
   "engines": {
-    "node": ">=10.x.x"
+    "node": ">=10"
   },
   "keywords": [
     "asciidoctor.js",
@@ -34,6 +34,9 @@
     "prismjs": "^1.15.0"
   },
   "devDependencies": {
-    "asciidoctor.js": "^1.5.9"
+    "@asciidoctor/core": "^2.0.0-rc.2"
+  },
+  "peerDependencies": {
+    "@asciidoctor/core": "^2.0.0-rc.2"
   }
 }
