@@ -52,7 +52,7 @@ module.exports = {
     node.removeSubstitution('specialcharacters');
     node.removeSubstitution('specialchars');
 
-    if (Prism.languages[lang] === undefined) {
+    if (typeof lang === 'string' && Prism.languages[lang] === undefined) {
       const {languages} = this;
       const source = node.lines.join('\n');
       throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).\n${source}`);
@@ -62,8 +62,8 @@ module.exports = {
   },
 
   highlight (node, content, lang) {
-    return Prism.highlight(content, Prism.languages[lang])
-      .replace(/____(\d+)____/gi, '<b class="conum">($1)</b>');
+    return typeof lang === 'string' ? Prism.highlight(content, Prism.languages[lang])
+      .replace(/____(\d+)____/gi, '<b class="conum">($1)</b>') : content;
   },
 
   handlesHighlighting () {

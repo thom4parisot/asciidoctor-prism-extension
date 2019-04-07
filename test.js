@@ -53,6 +53,7 @@ assert.ok(output.match('<style type="text/css" class="prism-theme">'));
 var attributes = [
   'prism-languages=yaml',
   'prism-theme!',
+  'source-highlighter=prism',
 ];
 var options = {attributes, backend, header_footer: true, safe: 'server'};
 var output = asciidoctor.convert(doc, options);
@@ -62,13 +63,13 @@ assert.ok(!output.match('<style type="text/css" class="prism-theme">'));
 // Listing without language
 var doc = `= Document
 :source-highlighter: prism
-:prism-languages: bash
 
+[source]
+.options/zones.txt
 ----
-$ MYSQL_URL=mysql://user:password@server/database \
-  node sql-connect.js
+Europe/London
+America/New_York
 ----
 `;
 
-var output = asciidoctor.convert(doc, options);
-assert.ok(output);
+assert.doesNotThrow(() => asciidoctor.convert(doc, options))
