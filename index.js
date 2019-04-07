@@ -25,7 +25,7 @@ const DEFAULT_LANGUAGES = [
 const hasLanguage = (block) => block.getAttribute('language');
 
 const getDocumentLanguages = (document) => {
-  return document.getAttribute('prism-languages', DEFAULT_LANGUAGES)
+  return (document.getAttribute('prism-languages') || DEFAULT_LANGUAGES)
     .split(',')
     .map(lang => lang.trim());
 };
@@ -41,8 +41,9 @@ module.exports = {
     const languages = getDocumentLanguages(document);
 
     loadLanguages(languages);
+
     this.backend = backend;
-    this.theme = document.getAttribute('prism-theme');
+    this.theme = document.hasAttribute('prism-theme') ? document.getAttribute('prism-theme') || DEFAULT_THEME : null;
     this.languages = languages;
 
     this.super();
@@ -79,9 +80,9 @@ module.exports = {
       return '';
     }
 
-    const theme = this.theme || DEFAULT_THEME;
+    const {theme} = this;
 
-    if (!this.theme || !theme) {
+    if (!theme) {
       return '';
     }
 

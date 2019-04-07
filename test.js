@@ -72,4 +72,13 @@ America/New_York
 ----
 `;
 
-assert.doesNotThrow(() => asciidoctor.convert(doc, options))
+assert.doesNotThrow(() => asciidoctor.convert(doc, options));
+
+// Default theme works
+var attributes = [
+  'prism-theme',
+  'source-highlighter=prism',
+];
+var options = {attributes, backend, header_footer: true, safe: 'server'};
+var output = asciidoctor.convert(doc, options);
+assert.ok(output.match('<style type="text/css" class="prism-theme">'));
