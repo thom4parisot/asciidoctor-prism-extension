@@ -54,7 +54,8 @@ module.exports = {
 
     if (Prism.languages[lang] === undefined) {
       const {languages} = this;
-      throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).`);
+      const source = node.lines.join('\n');
+      throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).\n${source}`);
     }
 
     return `<pre class="highlight highlight-prismjs prismjs"><code class="language-${lang}" data-lang="${lang}">${node.getContent()}</code></pre>`;

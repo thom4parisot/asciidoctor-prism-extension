@@ -7,7 +7,7 @@ const debug = require('util').debuglog('asciidoctor:prism-extension');
 
 asciidoctor.SyntaxHighlighter.register('prism', prismExtension);
 
-const doc = `= Document
+var doc = `= Document
 :source-highlighter: prism
 :prism-languages: bash
 
@@ -58,3 +58,17 @@ var options = {attributes, backend, header_footer: true, safe: 'server'};
 var output = asciidoctor.convert(doc, options);
 
 assert.ok(!output.match('<style type="text/css" class="prism-theme">'));
+
+// Listing without language
+var doc = `= Document
+:source-highlighter: prism
+:prism-languages: bash
+
+----
+$ MYSQL_URL=mysql://user:password@server/database \
+  node sql-connect.js
+----
+`;
+
+var output = asciidoctor.convert(doc, options);
+assert.ok(output);
