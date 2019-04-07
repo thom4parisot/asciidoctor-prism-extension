@@ -37,32 +37,32 @@ const unescape = html => {
 };
 
 module.exports = {
-  initialize (name, backend = 'html5') {
-    const languages = DEFAULT_LANGUAGES.split(',') /*getDocumentLanguages(doc) */;
+  initialize (name, backend, {$$smap: {document}}) {
+    const languages = getDocumentLanguages(document);
 
     loadLanguages(languages);
     this.backend = backend;
-    this.theme = true;
+    this.theme = document.getAttribute('prism-theme');
+    this.languages = languages;
+
     this.super();
   },
 
-  format (node, language) {
+  format (node, lang) {
     node.removeSubstitution('specialcharacters');
     node.removeSubstitution('specialchars');
 
-    const lang = node.getAttribute('language');
+    if (Prism.languages[lang] === undefined) {
+      const {languages} = this;
+      throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).`);
+    }
 
-    // if (Prism.languages[lang] === undefined) {
-    //   throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).`);
-    // }
+    return `<pre class="highlight highlight-prismjs prismjs"><code class="language-${lang}" data-lang="${lang}">${node.getContent()}</code></pre>`;
+  },
 
-    const output = Prism.highlight(
-      node.getContent(),
-      Prism.languages['javascript']
-    ).replace(/____(\d+)____/gi, '<b class="conum">($1)</b>');
-
-
-    return `<pre class="prismjs highlight-prismjs"><code>${output}</code></pre>`;
+  highlight (node, content, lang) {
+    return Prism.highlight(content, Prism.languages[lang])
+      .replace(/____(\d+)____/gi, '<b class="conum">($1)</b>');
   },
 
   handlesHighlighting () {

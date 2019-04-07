@@ -25,18 +25,20 @@ const backend = 'html5';
 var attributes = [
   'prism-languages=yaml',
   'prism-theme=prism.css',
+  'source-highlighter=prism',
 ];
 
 // Throw a TypeError if a source is converted without the backend being loaded
-assert.throws(() => asciidoctor.convert(doc, {backend}), TypeError);
-assert.throws(() => asciidoctor.convert(doc, {backend}), /(loaded: bash)/);
+assert.throws(() => asciidoctor.convert(doc, {backend, attributes: ['source-highlighter=prism']}), /(loaded: bash)/);
 
 // Loaded language makes the conversion
 var options = {attributes, backend, safe: 'server'};
 var output = asciidoctor.convert(doc, options);
 debug(output);
 
-assert.ok(output.match('<div class="listingblock prismjs highlight-prismjs">'));
+assert.ok(output.match('<div class="listingblock">'));
+assert.ok(output.match('<pre class="highlight highlight-prismjs prismjs">'));
+assert.ok(output.match('<code class="language-yaml" data-lang="yaml">'));
 assert.ok(output.match('<span class="token key atrule">'));
 assert.ok(!output.match('<style type="text/css" class="prism-theme">'));
 

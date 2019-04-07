@@ -34,9 +34,9 @@
     "prismjs": "^1.15.0"
   },
   "devDependencies": {
-    "@asciidoctor/core": "^2.0.0-rc.2"
+    "@asciidoctor/core": "^2.0.0-rc.3"
   },
   "peerDependencies": {
-    "@asciidoctor/core": "^2.0.0-rc.2"
+    "@asciidoctor/core": "^2.0.0-rc.3"
   }
 }
