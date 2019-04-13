@@ -37,7 +37,7 @@ const unescape = html => {
 };
 
 module.exports = {
-  initialize (name, backend, {$$smap: {document}}) {
+  initialize (name, backend, {document}) {
     const languages = getDocumentLanguages(document);
 
     loadLanguages(languages);
@@ -53,7 +53,7 @@ module.exports = {
     node.removeSubstitution('specialcharacters');
     node.removeSubstitution('specialchars');
 
-    if (typeof lang === 'string' && Prism.languages[lang] === undefined) {
+    if (lang && Prism.languages[lang] === undefined) {
       const {languages} = this;
       const source = node.lines.join('\n');
       throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).\n${source}`);
@@ -63,8 +63,11 @@ module.exports = {
   },
 
   highlight (node, content, lang) {
-    return typeof lang === 'string' ? Prism.highlight(content, Prism.languages[lang])
-      .replace(/____(\d+)____/gi, '<b class="conum">($1)</b>') : content;
+    return lang
+      ? Prism.highlight(
+          content, Prism.languages[lang]
+        ).replace(/____(\d+)____/gi, '<b class="conum">($1)</b>')
+      : content;
   },
 
   handlesHighlighting () {
