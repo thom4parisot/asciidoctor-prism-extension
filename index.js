@@ -59,7 +59,7 @@ module.exports = {
       throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).\n${source}`);
     }
 
-    return `<pre class="highlight highlight-prismjs prismjs"><code class="language-${lang}" data-lang="${lang}">${node.getContent()}</code></pre>`;
+    return `<pre class="highlight highlight-prismjs prismjs language-${lang}"><code class="language-${lang}" data-lang="${lang}">${node.getContent()}</code></pre>`;
   },
 
   highlight (node, content, lang) {
@@ -95,4 +95,8 @@ module.exports = {
 
     return `<style type="text/css" class="prism-theme">${output}</style>`;
   }
+}
+
+module.exports.register = (Extensions) => {
+  console.log(Object.keys(Extensions.$$))
 }

@@ -37,7 +37,7 @@ var output = asciidoctor.convert(doc, options);
 debug(output);
 
 assert.ok(output.match('<div class="listingblock">'));
-assert.ok(output.match('<pre class="highlight highlight-prismjs prismjs">'));
+assert.ok(output.match('<pre class="highlight highlight-prismjs prismjs language-yaml">'));
 assert.ok(output.match('<code class="language-yaml" data-lang="yaml">'));
 assert.ok(output.match('<span class="token key atrule">'));
 assert.ok(!output.match('<style type="text/css" class="prism-theme">'));
