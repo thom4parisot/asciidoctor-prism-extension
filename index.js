@@ -22,21 +22,13 @@ const DEFAULT_LANGUAGES = [
   'yaml',
 ].join(',');
 
-const hasLanguage = (block) => block.getAttribute('language');
-
 const getDocumentLanguages = (document) => {
   return (document.getAttribute('prism-languages') || DEFAULT_LANGUAGES)
     .split(',')
     .map(lang => lang.trim());
 };
 
-const unescape = html => {
-  return html.replace(/=&gt;/gi, '=>')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>');
-};
-
-module.exports = {
+const PrismExtension = {
   initialize (name, backend, {document}) {
     const languages = getDocumentLanguages(document);
 
@@ -78,8 +70,8 @@ module.exports = {
     return true;
   },
 
-  docinfo () {
-    if (this.backend !== 'html5') {
+  docinfo (location, doc) {
+    if (!doc.isBasebackend('html')) {
       return '';
     }
 
@@ -97,6 +89,9 @@ module.exports = {
   }
 }
 
-module.exports.register = (Extensions) => {
-  console.log(Object.keys(Extensions.$$))
+module.exports = PrismExtension
+module.exports.register = function register (registry) {
+  const AsciidoctorModule = registry.$$base_module
+  const SyntaxHighlighterRegistry = AsciidoctorModule.$$['SyntaxHighlighter']
+  SyntaxHighlighterRegistry.register('prism', PrismExtension)
 }
