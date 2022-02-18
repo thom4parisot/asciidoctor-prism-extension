@@ -31,10 +31,10 @@
   },
   "homepage": "https://github.com/oncletom/asciidoctor-prism-extension#readme",
   "dependencies": {
-    "prismjs": "^1.15.0"
+    "prismjs": "^1.27.0"
   },
   "devDependencies": {
-    "@asciidoctor/core": "^2.0.0"
+    "@asciidoctor/core": "^2.2.6"
   },
   "peerDependencies": {
     "@asciidoctor/core": "^2.0.0"
