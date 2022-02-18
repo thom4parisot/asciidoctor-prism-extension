@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oncletom/asciidoctor-prism-extension.git"
+    "url": "git+https://github.com/thom4parisot/asciidoctor-prism-extension.git"
   },
   "engines": {
     "node": ">=10"
@@ -24,12 +24,12 @@
     "server side",
     "plugin"
   ],
-  "author": "Thomas Parisot (https://oncletom.io)",
+  "author": "Thomas Parisot (https://thom4.net)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oncletom/asciidoctor-prism-extension/issues"
+    "url": "https://github.com/thom4parisot/asciidoctor-prism-extension/issues"
   },
-  "homepage": "https://github.com/oncletom/asciidoctor-prism-extension#readme",
+  "homepage": "https://github.com/thom4parisot/asciidoctor-prism-extension#readme",
   "dependencies": {
     "prismjs": "^1.27.0"
   },

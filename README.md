@@ -1,4 +1,4 @@
-# asciidoctor-prism-extension [![Build Status](https://travis-ci.org/oncletom/asciidoctor-prism-extension.svg?branch=master)](https://travis-ci.org/oncletom/asciidoctor-prism-extension)
+# asciidoctor-prism-extension [![.github/workflows/test.yml](https://github.com/thom4parisot/asciidoctor-prism-extension/actions/workflows/test.yml/badge.svg)](https://github.com/thom4parisot/asciidoctor-prism-extension/actions/workflows/test.yml)
 
 > Highlight Asciidoc code listings with Prism.js, server side, with no front-end dependencies.
 
