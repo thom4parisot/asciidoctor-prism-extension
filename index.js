@@ -1,9 +1,9 @@
-'use strict';
-
-const {readFileSync} = require('fs');
-const {join, dirname} = require('path');
-const Prism = require('prismjs');
-const loadLanguages = require('prismjs/components/index.js');
+import {readFileSync} from 'node:fs';
+import {dirname, join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {SyntaxHighlighter} from '@asciidoctor/core';
+import Prism from 'prismjs';
+import loadLanguages from 'prismjs/components/index.js';
 
 Prism.hooks.add('before-tokenize', (env) => {
   env.code = env.code.replace(/<b class="conum">\((\d+)\)<\/b>/gi, '____$1____');
@@ -28,33 +28,36 @@ const getDocumentLanguages = (document) => {
     .map(lang => lang.trim());
 };
 
+const getDocumentTheme = (document) => {
+  return document.hasAttribute('prism-theme') ? document.getAttribute('prism-theme') || DEFAULT_THEME : null;
+};
+
+function register(registry = SyntaxHighlighter) {
+  registry.register(PrismExtension, 'prism');
+}
+
 const PrismExtension = {
-  initialize (name, backend, {document}) {
-    const languages = getDocumentLanguages(document);
+  name: 'prism',
 
-    loadLanguages(languages);
+  register,
 
-    this.backend = backend;
-    this.theme = document.hasAttribute('prism-theme') ? document.getAttribute('prism-theme') || DEFAULT_THEME : null;
-    this.languages = languages;
-
-    this.super();
-  },
-
-  format (node, lang) {
+  async format (node, lang) {
     node.removeSubstitution('specialcharacters');
     node.removeSubstitution('specialchars');
 
-    if (lang && Prism.languages[lang] === undefined) {
-      const {languages} = this;
-      const source = node.lines.join('\n');
-      throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).\n${source}`);
-    }
-
-    return `<pre class="highlight highlight-prismjs prismjs language-${lang}"><code class="language-${lang}" data-lang="${lang}">${node.getContent()}</code></pre>`;
+    const content = await node.getContent();
+    return `<pre class="highlight highlight-prismjs prismjs language-${lang}"><code class="language-${lang}" data-lang="${lang}">${content}</code></pre>`;
   },
 
   highlight (node, content, lang) {
+    const languages = getDocumentLanguages(node.document);
+    loadLanguages(languages);
+
+    if (lang && Prism.languages[lang] === undefined) {
+      const source = node.getSourceLines().join('\n');
+      throw TypeError(`Prism language ${lang} is not loaded (loaded: ${languages}).\n${source}`);
+    }
+
     return lang
       ? Prism.highlight(
           content, Prism.languages[lang]
@@ -71,27 +74,23 @@ const PrismExtension = {
   },
 
   docinfo (location, doc) {
-    if (!doc.isBasebackend('html')) {
+    if (!doc.basebackend('html')) {
       return '';
     }
 
-    const {theme} = this;
+    const theme = getDocumentTheme(doc);
 
     if (!theme) {
       return '';
     }
 
-    const prism_folder = dirname(require.resolve('prismjs'));
+    const prism_folder = dirname(fileURLToPath(import.meta.resolve('prismjs')));
     const theme_location = join(prism_folder, 'themes', theme);
     const output = readFileSync(theme_location);
 
     return `<style type="text/css" class="prism-theme">${output}</style>`;
   }
-}
+};
 
-module.exports = PrismExtension
-module.exports.register = function register (registry) {
-  const AsciidoctorModule = registry.$$base_module
-  const SyntaxHighlighterRegistry = AsciidoctorModule.$$['SyntaxHighlighter']
-  SyntaxHighlighterRegistry.register('prism', PrismExtension)
-}
+export {register};
+export default PrismExtension;

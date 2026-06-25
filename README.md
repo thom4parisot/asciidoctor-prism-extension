@@ -2,7 +2,8 @@
 
 > Highlight Asciidoc code listings with Prism.js, server side, with no front-end dependencies.
 
-This module is intended to be used with [Asciidoctor.js][], and Node.js (v10+). It adds a new syntax highlighter, to be used when converting Asciidoc to HTML5 documents. The syntax highlighting happens during the document conversion.
+This module is intended to be used with [Asciidoctor.js][] v4, and Node.js (v22+). It adds a new syntax highlighter, to be used when converting Asciidoc to HTML5 documents. The syntax highlighting happens during the document conversion.
+This package is ESM-only.
 
 ![Example of rendered code listing](example.png)
 
@@ -17,15 +18,15 @@ $ npm install @asciidoctor/core asciidoctor-prism-extension
 ## Register the extension
 
 ```js
-const asciidoctor = require('@asciidoctor/core')();
-const prismExtension = require('asciidoctor-prism-extension');
+import prismExtension from 'asciidoctor-prism-extension';
 
-asciidoctor.SyntaxHighlighter.register('prism', prismExtension);
+prismExtension.register();
 ```
 
 ## Change the rendering
 
 This extension relies on [Asciidoc attributes](asciidoc-attributes) to affect the **theme** and the **highlighted syntaxes**.
+Enable the syntax highlighter from the document header using `source-highlighter=prism`.
 
 ```asciidoc
 = Document
@@ -56,9 +57,15 @@ Theme can be disabled with the negated attribute (`!` character):
 Then you convert as usual:
 
 ```js
-asciidoctor.convertFile('document.adoc', {
+import {convertFile} from '@asciidoctor/core';
+import prismExtension from 'asciidoctor-prism-extension';
+
+prismExtension.register();
+
+await convertFile('document.adoc', {
   to_file: 'document.html',
-  backend: 'html5'
+  backend: 'html5',
+  safe: 'safe'
 });
 ```
 
