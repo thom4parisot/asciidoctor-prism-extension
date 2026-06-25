@@ -2,7 +2,9 @@
   "name": "asciidoctor-prism-extension",
   "version": "2.0.7",
   "description": "Highlight Asciidoc code listings with Prism.js, server side, with no front-end dependencies.",
+  "type": "module",
   "main": "index.js",
+  "exports": "./index.js",
   "scripts": {
     "test": "node test.js"
   },
@@ -11,7 +13,7 @@
     "url": "git+https://github.com/thom4parisot/asciidoctor-prism-extension.git"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=22"
   },
   "keywords": [
     "asciidoctor.js",
@@ -34,9 +36,9 @@
     "prismjs": "^1.27.0"
   },
   "devDependencies": {
-    "@asciidoctor/core": "^2.2.6"
+    "@asciidoctor/core": "^4.0.0"
   },
   "peerDependencies": {
-    "@asciidoctor/core": "^2.0.0"
+    "@asciidoctor/core": "^4.0.0"
   }
 }
